@@ -2,14 +2,15 @@ Fuses
 =====
 
 ** _WARNING:_ The `RSTDISBL` fuse is evil.  Do not set it under any circumstances. **
-** _WARNING:_ Fuse bits are reversed! **
+
+** _WARNING:_ Fuse bits are reversed to what you think they are! **
 
 To find hex values for fuse settings go [here](http://www.engbedded.com/fusecalc/).  Or look it up in the datasheet.  But the calculator is easier.
 
 Debug Wire
 ==========
 
-Debug wire is a mode that atmegas can be put in to allow certain debugging things.  In this mode, fuses cannot be set.
+Debug wire is a mode that atmegas can be put in to allow certain debugging things.  In this mode, however, fuses cannot be set.
 
 Setting debugwire is as simple as setting the `DWEN` fuse:
 
@@ -69,6 +70,29 @@ and place in it the line
 
 The values for `idVendor` and `idProduct` can be read of `lsusb`.  Then run `sudo /etc/init.d/udev restart` to flush settings.
 
+Hardware
+========
+
+In this circuit, the programmer header should map as follows:
+
+|Pin Number | Programmer Name | Circuit Name          |
+|----------:|-----------------|-----------------------|
+|1          | TCK             | SCK                   |
+|2          | GND             | n/c                   |
+|3          | TDO             | ATmega pin 18 (MISO)  |
+|4          | VTref           | VCC (3.3V)            |
+|5          | TMS             | n/c                   |
+|6          | nSRST           | ATmega pin 1 (/RESET) |
+|7          | Vsupply         | n/c                   |
+|8          | nTRST           | n/c                   |
+|9          | TDI             | ATmega pin 17 (MOSI)  |
+|10         | GND             | GND                   |
+
+
+
 References
 =========
+ * [Basic AVRDUDE tutorial](http://www.ladyada.net/learn/avr/avrdude.html)
+ * [Fuse calculator](http://www.engbedded.com/fusecalc/)
+
  * http://winavr.sourceforge.net/AVR-GDB_and_AVaRICE_Guide.pdf
