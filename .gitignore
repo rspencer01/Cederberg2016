@@ -1,0 +1,5 @@
+*.atsln
+*.atsuo
+Debug
+build
+*.cproj
