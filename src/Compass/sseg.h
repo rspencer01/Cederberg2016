@@ -42,8 +42,11 @@
 
 // Representation of some letters
 #define SSEG_A 0b10001000
+#define SSEG_B 0b10000011
 #define SSEG_C 0b11000110
+#define SSEG_D 0b10100001
 #define SSEG_E 0b10000110
+#define SSEG_F 0b10001110
 #define SSEG_H 0b10001001
 #define SSEG_I 0b11001111
 #define SSEG_L 0b11000111
@@ -58,5 +61,6 @@ void strobeDisplay();
 
 // Write a numeral
 void writeNumber(int n);
+void writeHex(unsigned int n);
 
 #endif

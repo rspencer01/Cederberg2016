@@ -14,6 +14,13 @@ const unsigned char SSEG_NUMBERS[10] = { SSEG_ZERO,
                                          SSEG_SEVEN,
                                          SSEG_EIGHT,
                                          SSEG_NINE };
+/// An array consisting of some letters represented in seven segment displays
+const unsigned char SSEG_LETTERS[6] = { SSEG_A,
+                                        SSEG_B,
+                                        SSEG_C,
+                                        SSEG_D,
+                                        SSEG_E,
+                                        SSEG_F};
 
 /// The actual values in each display
 int displays[4] = {0, 0, 0, 0};
@@ -41,12 +48,6 @@ void strobeDisplay()
 }
 
 /// Writes a decimal number to the display.
-///
-/// The number passed to this function should be
-/// 100 times larger than the number to be displayed,
-/// and in the range `(-10000 , 100000)`
-///
-/// The decimal place will automatically be placed.
 void writeNumber(int n)
 {
   displays[0] = SSEG_NUMBERS[n%10];
@@ -56,4 +57,18 @@ void writeNumber(int n)
   displays[2] = SSEG_NUMBERS[n%10];
   n/=10;
   displays[3] = SSEG_NUMBERS[n%10];
+}
+
+/// Writes a hex number to the display.
+void writeHex(unsigned int n)
+{
+  int i = 0;
+  for (;i<4;i++)
+  {
+    if (n%0x10 < 10)
+      displays[i] = SSEG_NUMBERS[n%0x10];
+    else
+      displays[i] = SSEG_LETTERS[(n%0x10)-10];
+    n/=0x10;
+  }
 }
