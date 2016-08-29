@@ -2,13 +2,15 @@
 #include "gpio.h"
 #include "utils.h"
 
-/// Internal buffer for port C
+/// Internal buffer for port B
 ///
 /// Such internal buffers are used so that we can do things like
 /// `portC |= 0xF0`.  This involves a read, and reading output
 /// pins is a no-no.  Thus we store this internal state and
 /// do such calculations against this variable.  Then we write
 /// out all the ports (almost atomically, too)
+unsigned char portB = 0;
+/// Internal buffer for port C
 unsigned char portC = 0;
 /// Internal buffer for port D
 unsigned char portD = 0;
@@ -18,6 +20,18 @@ unsigned char portD = 0;
 /// Sets the pins to be input or output according to the following
 /// port scheme.  By default the directions are set to out, if they
 /// are inputs or programmers or no connect.
+///
+/// __Port B__
+/// |Pin Number | Usage              | I/O  |
+/// |:---------:|:------------------:|:----:|
+/// |`0`        |                    |      |
+/// |`1`        |                    |      |
+/// |`2`        |                    |      |
+/// |`3`        | `MOSI`             | `O`  |
+/// |`4`        | `MISO`             | `I`  |
+/// |`5`        | `SCK`              | `O`  |
+/// |`6`        |                    |      |
+/// |`7`        | `CS`               | `O`  |
 ///
 /// __Port C__
 /// |Pin Number | Usage              | I/O  |
@@ -43,9 +57,9 @@ unsigned char portD = 0;
 /// |`7`        | `SSEG 7`           | `O`  |
 void initPorts()
 {
-  DDRC = 0b11111111;
-  DDRD = 0b11111111;
-
+  DDRB = PORTB_OUTPUT_MASK;
+  DDRC = PORTC_OUTPUT_MASK;
+  DDRD = PORTD_OUTPUT_MASK;
   setPorts();
 }
 
@@ -59,6 +73,7 @@ void initPorts()
 /// push buttons by masking the correct ports.
 void setPorts()
 {
-  PORTD = portD;
-  PORTC = portC;
+  PORTB = portB & PORTB_OUTPUT_MASK | 0b00000100;
+  PORTC = portC & PORTC_OUTPUT_MASK;
+  PORTD = portD & PORTD_OUTPUT_MASK;
 }

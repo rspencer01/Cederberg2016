@@ -3,21 +3,24 @@
 #include "gpio.h"
 #include "sseg.h"
 #include "timers.h"
+#include "spi.h"
 
 int main(void)
 {
   initMicro();
   initPorts();
   initTimers();
-  int i;
-  writeHex(sizeof(i));
-  while (initialWait)
-  {
-    __asm__ __volatile__ (" wdr ");
-  }
-  writeHex(0xed12);
+  writeHex(0xFFFF);
   while(1)
   {
-    __asm__ __volatile__ (" wdr ");
+    while (initialWait)
+    {
+      __asm__ __volatile__ (" wdr ");
+    }
+    writeHex(0xFFFF);
+    initSPI();
+    // Get the WHOAMI from the compass chip
+    writeHex(SPITranceiver( 0b10001111 ));
+    initialWait = 5;
   }
 }
