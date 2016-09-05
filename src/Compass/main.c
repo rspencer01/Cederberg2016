@@ -16,6 +16,19 @@ int main(void)
     while (initialWait)
     {
       __asm__ __volatile__ (" wdr ");
+      if (readPushButton(PUSHBUTTON_1))
+        writeHex(0x0001);
+      else
+      if (readPushButton(PUSHBUTTON_2))
+        writeHex(0x0010);
+      else
+      if (readPushButton(PUSHBUTTON_3))
+        writeHex(0x0100);
+      else
+      if (readPushButton(PUSHBUTTON_4))
+        writeHex(0x1000);
+      else
+        writeHex(0x0000);
     }
     writeHex(0xFFFF);
     initSPI();

@@ -35,14 +35,14 @@ void initTimers()
 /// Updates the display strobe on a 4ms basis.
 ISR(TIMER0_COMPA_vect)
 {
+  // Update the display strobing
+  strobeDisplay();
+
   timer_4ms_20ms--;
   if (timer_4ms_20ms==0)
   {
     // Occurs every 240ms
     timer_4ms_20ms = INI_4MS_20MS;
-
-    // Update the display strobing
-    strobeDisplay();
 
     timer_20ms_1s--;
     if (timer_20ms_1s==0)
