@@ -1,5 +1,8 @@
+AVR Howto
+=========
+
 Fuses
-=====
+-----
 
 ** _WARNING:_ The `RSTDISBL` fuse is evil.  Do not set it under any circumstances. **
 
@@ -8,7 +11,7 @@ Fuses
 To find hex values for fuse settings go [here](http://www.engbedded.com/fusecalc/).  Or look it up in the datasheet.  But the calculator is easier.
 
 Debug Wire
-==========
+----------
 
 Debug wire is a mode that atmegas can be put in to allow certain debugging things.  In this mode, however, fuses cannot be set.
 
@@ -23,12 +26,11 @@ Unsetting debugWire is more tricky.  I have not succesfully done this yet (semib
 You need to run it twice as the first time the JTAG gets the thing into a temporary no debugWire mode, and the second time it burns the fuse to disable debugWire.
 
 Programming
-===========
+-----------
 
 As far as I can see there are two ways to program the chip: via debugWire and via ISP
 
-ISP Programming
----------------
+### ISP Programming
 
 To program the flash do
 
@@ -41,8 +43,7 @@ where the file is stored in hex mode, ie like
     :1000200093279C838B8389819A8101969A83898304
     ...
 
-Debug Wire Programming
-----------------------
+### Debug Wire Programming
 
 To program do
 
@@ -51,12 +52,12 @@ To program do
 Where the file is a compiled `.o` or `.elf` file. This will also begin a debug session on the chip.
 
 Debugging
-=========
+---------
 
 Install the code via the debug wire programming.  Then start `avr-gdb` on the object file, and as a first command set `target remote localhost:4242`.  Then use `gdb` normally.
 
 USB Issues
-==========
+----------
 
 TODO: Get this to work (reference)[http://www.homebuilthardware.com/index.php/avr/linux-avrdragon-tutorial-1/]
 
@@ -71,7 +72,7 @@ and place in it the line
 The values for `idVendor` and `idProduct` can be read of `lsusb`.  Then run `sudo /etc/init.d/udev restart` to flush settings.
 
 Hardware
-========
+--------
 
 In this circuit, the programmer header should map as follows:
 
@@ -91,7 +92,7 @@ In this circuit, the programmer header should map as follows:
 
 
 References
-=========
+----------
  * [Basic AVRDUDE tutorial](http://www.ladyada.net/learn/avr/avrdude.html)
  * [Fuse calculator](http://www.engbedded.com/fusecalc/)
 
