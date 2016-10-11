@@ -72,3 +72,15 @@ void writeHex(unsigned int n)
     n/=0x10;
   }
 }
+
+/// Sets all the displays to be black
+void writeClear()
+{
+  displays[0] = displays[1] = displays[2] = displays[3] = 0xFF;
+}
+
+/// Switches off the displays via the control lines
+void blankDisplay()
+{
+  SSEG_SELECT_PORT &= ~ SSEG_SELECT_MASK;
+}

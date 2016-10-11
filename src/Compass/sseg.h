@@ -63,4 +63,8 @@ void strobeDisplay();
 void writeNumber(int n);
 void writeHex(unsigned int n);
 
+// Clear the display
+void writeClear();
+void blankDisplay();
+
 #endif
