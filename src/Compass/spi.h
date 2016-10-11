@@ -1,9 +1,9 @@
 #ifndef SPI_H_
 #define SPI_H_
 
-// Sets up the SPI interface
 void initSPI();
 
-unsigned char SPITranceiver(unsigned char data);
+unsigned char SPIReadRegister(unsigned char address);
+unsigned char SPIWriteRegister(unsigned char address, unsigned char data);
 
 #endif
