@@ -48,7 +48,7 @@ unsigned char portD = 0;
 /// __Port C__
 /// |Pin Number | Usage              | I/O  |
 /// |:---------:|:------------------:|:----:|
-/// |`0`        |                    |      |
+/// |`0`        | `Acc Power`        | `O`  |
 /// |`1`        |                    |      |
 /// |`2`        | `SSEG Control 1`   | `O`  |
 /// |`3`        | `SSEG Control 2`   | `O`  |
