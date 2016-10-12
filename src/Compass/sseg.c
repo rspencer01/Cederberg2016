@@ -1,5 +1,6 @@
 #include "sseg.h"
 #include "gpio.h"
+#include "utils.h"
 /// An array of the pins that activate each of the four displays
 const unsigned char SSEG_SELECT[4] = {0b00000100,0b00001000,0b00010000,0b00100000};
 
@@ -47,18 +48,6 @@ void strobeDisplay()
   setPorts();
 }
 
-/// Writes a decimal number to the display.
-void writeNumber(int n)
-{
-  displays[0] = SSEG_NUMBERS[n%10];
-  n/=10;
-  displays[1] = SSEG_NUMBERS[n%10];
-  n/=10;
-  displays[2] = SSEG_NUMBERS[n%10];
-  n/=10;
-  displays[3] = SSEG_NUMBERS[n%10];
-}
-
 /// Writes a hex number to the display.
 void writeHex(unsigned int n)
 {
@@ -71,6 +60,37 @@ void writeHex(unsigned int n)
       displays[i] = SSEG_LETTERS[(n%0x10)-10];
     n/=0x10;
   }
+}
+
+/// Writes a int number to the display.
+///
+/// Can handle all integers in the range `-999 <= x <= 9999`
+void writeInt(int n)
+{
+  writeClear();
+  int d = digits(n);
+  if (d > 4)
+  {
+    writeHex(0xFFFF);
+    return;
+  }
+  if (n < 0)
+  {
+    if (d>3)
+    {
+      writeHex(0xEEEE);
+      return;
+    }
+    displays[d] = SSEG_MINUS;
+    n = -n;
+  }
+  int i = 0;
+  for (; i < 4; i++)
+  {
+    if (i < d)
+      displays[i] = SSEG_NUMBERS[n%10];
+    n/=10;
+  } 
 }
 
 /// Sets all the displays to be black

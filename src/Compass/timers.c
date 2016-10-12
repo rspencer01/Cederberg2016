@@ -54,3 +54,27 @@ ISR(TIMER0_COMPA_vect)
   }
 }
 
+///// The watchdog interrupt vector
+/////
+///// Called whenever the watchdog times out (once every 8s)
+///// Reads the thermometers in order to keep a minimum/maximum
+///// that is updated every 64s.
+//ISR(WDT_vect)
+//{
+//  if (state!=STATE_SLEEP)
+//    return;
+//  watchdogCount--;
+//  if (watchdogCount==0)
+//  {
+//    // Simply read the temperatures.  This will update min/max
+//    // automatically.
+//    readThermometer(INDOOR_THERMOMETER);
+//    readThermometer(OUTDOOR_THERMOMETER);
+//    // Reset the counter
+//    watchdogCount = INI_8S_64S;    
+//  }
+//  // Just go to sleep immediately, if the timer won't do it
+//  if (state==STATE_SLEEP)
+//    goToSleep = 1;
+//}
+

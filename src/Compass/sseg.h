@@ -60,8 +60,8 @@
 void strobeDisplay();
 
 // Write a numeral
-void writeNumber(int n);
 void writeHex(unsigned int n);
+void writeInt(int n);
 
 // Clear the display
 void writeClear();
