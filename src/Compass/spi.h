@@ -5,5 +5,6 @@ void initSPI();
 
 unsigned char SPIReadRegister(unsigned char address);
 unsigned char SPIWriteRegister(unsigned char address, unsigned char data);
-
+void disableSPI();
+void enableSPI();
 #endif
