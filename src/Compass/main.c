@@ -25,6 +25,7 @@ int main(void)
   }
   // Now that the compass module is attached, we can initialise it.
   initCompass();
+  calibrate();
   // Loop forever.  Every second, read the compass and display it.
   while(1)
   {
