@@ -1,3 +1,4 @@
+#include <avr/wdt.h>
 #include "spi.h"
 #include "gpio.h"
 
@@ -48,9 +49,7 @@ unsigned char RdWrSPI(unsigned char data)
   SPDR = data;
   // Poll a dummy byte, but don't watchdog out
   while (!(SPSR & (1<<SPIF) ))
-  {
-    __asm__ __volatile__ (" wdr ");
-  }
+    wdt_reset();
   data = SPDR;
   return data;
 }

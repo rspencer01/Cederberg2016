@@ -1,3 +1,4 @@
+#include <avr/wdt.h>
 #include <avr/io.h>
 #include "sseg.h"
 #include "utils.h"
@@ -113,7 +114,7 @@ void delay(int ms)
     // Gotten from some old code for a 4MHz processor and doubled
     n = 495;
     while (--n)
-    __asm__ __volatile__ (" wdr ");
+      wdt_reset();
     --ms;
   }
 }

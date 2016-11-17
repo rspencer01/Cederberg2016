@@ -1,3 +1,4 @@
+#include <avr/wdt.h>
 #include <avr/io.h>
 #include "utils.h"
 #include "gpio.h"
@@ -20,9 +21,7 @@ int main(void)
   writeHex(0xdead);
   initialWait = 4;
   while(initialWait)
-  {
-    __asm__ __volatile__ (" wdr ");
-  }
+    wdt_reset();
   // Now that the compass module is attached, we can initialise it.
   initCompass();
   calibrate();
@@ -32,8 +31,6 @@ int main(void)
     writeInt(readCompass());
     initialWait = 1;
     while(initialWait)
-    {
-      __asm__ __volatile__ (" wdr ");
-    }
+      wdt_reset();
   }
 }

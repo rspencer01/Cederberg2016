@@ -1,3 +1,4 @@
+#include <avr/wdt.h>
 #include "compass.h"
 #include "spi.h"
 #include "utils.h"
@@ -29,11 +30,11 @@ void initCompass()
 void calibrate()
 {
   writeMessage(SSEG_CAL);
+
   initialWait = 1;
   while(initialWait)
-  {
-    __asm__ __volatile__ (" wdr ");
-  }
+    wdt_reset();
+
   int lastInitialWait = 9;
   xcalib = 0;
   ycalib = 0;
@@ -48,15 +49,14 @@ void calibrate()
     }
     writeInt(initialWait);
     delay(10);
-    __asm__ __volatile__ (" wdr ");
+    wdt_reset();
   }
 
   writeMessage(SSEG_DONE);
+
   initialWait = 1;
   while(initialWait)
-  {
-    __asm__ __volatile__ (" wdr ");
-  }
+    wdt_reset();
 }
 
 /// Reads the x value from the magnetometer
