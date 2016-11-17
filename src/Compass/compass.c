@@ -1,5 +1,6 @@
 #include <avr/wdt.h>
 #include "compass.h"
+#include "gpio.h"
 #include "spi.h"
 #include "utils.h"
 #include "timers.h"
@@ -11,12 +12,18 @@ int xcalib;
 int ycalib;
 
 /// Set all the registers in the compass as desired
-void initCompass()
+void enableCompass()
 {
+  portC |= 0b00000001;
+  setPorts();
+  initSPI();
+  enableSPI();
+  delay(50);
   SPIWriteRegister(0x20,0x37);
   SPIWriteRegister(0x24,0x68);
   SPIWriteRegister(0x25,0x00);
   SPIWriteRegister(0x26,0x00);
+  delay(50);
 }
 
 /// Calibrates the compass
@@ -29,6 +36,11 @@ void initCompass()
 /// the watchdog of its own accord.
 void calibrate()
 {
+  // Do this so we get a full second of the first message
+  initialWait = 1;
+  while(initialWait)
+    wdt_reset();
+
   writeMessage(SSEG_CAL);
 
   initialWait = 1;

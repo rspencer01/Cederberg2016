@@ -19,4 +19,8 @@ int iatan2(int x, int y);
 // Delays for an approximate time
 void delay(int ms);
 
+void sleep();
+
+void resetWatchdogConfig();
+
 #endif /* UTILS_H_ */

@@ -1,7 +1,7 @@
 #ifndef COMPASS_H
 #define COMPASS_H
 
-void initCompass();
+void enableCompass();
 
 void calibrate();
 
@@ -11,4 +11,5 @@ int readCompass();
 int readCompassX();
 int readCompassY();
 
+void disableCompass();
 #endif

@@ -1,31 +1,50 @@
 #include <avr/wdt.h>
 #include <avr/io.h>
+#include <avr/interrupt.h>
+#include <avr/wdt.h>
+#include "compass.h"
+#include "gpio.h"
 #include "sseg.h"
 #include "utils.h"
 
+/// Resets the watchdog timer configuration.
+///
+/// Resets the watchdog to timeout after 4 seconds, and to fire an interrupt on
+/// next timeout.  Thereafter this function must be called again to set up
+/// for another interrupt.
+///
+/// I think it must be possible to only have to call this once, but can't seem
+/// to get it to work.  This will have to do.
+void resetWatchdogConfig()
+{
+  // This here is magic.  After hours of stuffing around with registers, I
+  // found a macro in <avr/wdt.h> which, after modification, fit my requirements
+  // Please do not edit this too much.
+  __asm__ __volatile__ (
+      "in __tmp_reg__,__SREG__" "\n\t"
+      "cli" "\n\t"
+      "wdr" "\n\t"
+      "sts %0, %1" "\n\t"
+      "out __SREG__,__tmp_reg__" "\n\t"
+      "sts %0, %2" "\n \t"
+      : /* no outputs */
+      : "n" (_SFR_MEM_ADDR(_WD_CONTROL_REG)),
+      "r" ((uint8_t)(_BV(WDCE) | _BV(WDE))),
+      "r" ((uint8_t) (_BV(WDIE) | _BV(WDP3)))
+      : "r0"
+  );
+}
+
 /// Initialises the microcontroller
 ///
-/// Sets up the watchdog timer, and the pushbutton interrupts
-/// and the type of sleep in the registers.
+/// Sets up the watchdog timer and the type of sleep in the registers.
 void initMicro()
 {
-  // Disable all interrupts
-  SREG &= ~_BV(SREG_I);
-
-  // Clear these bits, in this order, on startup/restart, as advised in datasheet (pg51)
-  MCUSR &= ~_BV(WDRF);
-  // Set the timer bits that let us change things
-  WDTCSR |= _BV(WDCE) | _BV(WDE);
-  // Quickly!  Within 4 clock cycles we must set up the watchdog
-  WDTCSR = _BV(WDIE) | _BV(WDP3) | _BV(WDP0);
-  // Set the watchdog to give an interrupt
-  WDTCSR |= _BV(WDIE);
-
+  cli();
+  resetWatchdogConfig();
   // Set the sleep mode to "power-down"
   SMCR = _BV(SM1);
-
-  // Enable the interrupts again
-  SREG |= _BV(SREG_I);
+  sei();
 }
 
 /// Puts the microcontroller in a sleep.
@@ -38,13 +57,7 @@ void sleep()
   // Make the screen blank
   writeClear();
   blankDisplay();
-  // Push button interrupts on lows.  This is so that
-  // we actually wake up.  Must be changed in the ISR.
-  // Remember to disable/re-enable interrupts
-  SREG &= ~_BV(SREG_I);
-  EIMSK = _BV(INT0) | _BV(INT1);
-  EICRA = 0;
-  SREG |= _BV(SREG_I);
+  setPorts();
   // Enable sleeping
   SMCR |= _BV(SE);
   // Actually sleep
