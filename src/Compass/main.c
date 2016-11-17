@@ -7,6 +7,8 @@
 #include "spi.h"
 #include "compass.h"
 
+int pushbuttonPressed = 0;
+
 int main(void)
 {
   initMicro();
@@ -25,6 +27,11 @@ int main(void)
   while(1)
   {
     writeInt(readCompass());
+    if (pushbuttonPressed & 0x01)
+    {
+      calibrate();
+      pushbuttonPressed &= ~0x01;
+    }
     initialWait = 1;
     while(initialWait)
       wdt_reset();

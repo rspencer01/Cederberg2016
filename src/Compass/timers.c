@@ -1,13 +1,22 @@
 #include <avr/interrupt.h>
+#include <avr/wdt.h>
 #include "timers.h"
 #include "sseg.h"
+#include "gpio.h"
+#include "compass.h"
 
+extern int count;
+extern int resetwdt;
+extern int pushbuttonPressed;
 /// A countdown to divide the 4ms timer into 40ms
 int timer_4ms_20ms;
 /// A countdown to divide the 40ms timer into 1s
 int timer_20ms_1s;
 /// Number of seconds to wait before doing anything (see main loop)
 int initialWait = 3;
+
+/// The pushbutton debounce series
+int buttonDebounce[4] = {0,0,0,0};
 
 /// Initialises the timer module.
 ///
@@ -41,8 +50,18 @@ ISR(TIMER0_COMPA_vect)
   timer_4ms_20ms--;
   if (timer_4ms_20ms==0)
   {
-    // Occurs every 240ms
+    // Occurs every 20ms
     timer_4ms_20ms = INI_4MS_20MS;
+
+    int i;
+    for (i = 0; i < 4; ++i)
+    {
+      buttonDebounce[i] <<= 1;
+      if (readPushButton(i))
+        buttonDebounce[i] |= 1;
+      if (buttonDebounce[i] == 0b0001111)
+        pushbuttonPressed |= 1<<i;
+    }
 
     timer_20ms_1s--;
     if (timer_20ms_1s==0)
@@ -54,27 +73,11 @@ ISR(TIMER0_COMPA_vect)
   }
 }
 
-///// The watchdog interrupt vector
-/////
-///// Called whenever the watchdog times out (once every 8s)
-///// Reads the thermometers in order to keep a minimum/maximum
-///// that is updated every 64s.
-//ISR(WDT_vect)
-//{
-//  if (state!=STATE_SLEEP)
-//    return;
-//  watchdogCount--;
-//  if (watchdogCount==0)
-//  {
-//    // Simply read the temperatures.  This will update min/max
-//    // automatically.
-//    readThermometer(INDOOR_THERMOMETER);
-//    readThermometer(OUTDOOR_THERMOMETER);
-//    // Reset the counter
-//    watchdogCount = INI_8S_64S;    
-//  }
-//  // Just go to sleep immediately, if the timer won't do it
-//  if (state==STATE_SLEEP)
-//    goToSleep = 1;
-//}
-
+/// The watchdog interrupt vector
+///
+/// Called whenever the watchdog times out (once every 8s)
+/// Reads the thermometers in order to keep a minimum/maximum
+/// that is updated every 64s.
+ISR(WDT_vect)
+{
+}
