@@ -62,6 +62,27 @@ void writeHex(unsigned int n)
   }
 }
 
+void writeMessage(int message)
+{
+  switch (message)
+  {
+    case SSEG_CAL:
+      displays[3] = SSEG_C;
+      displays[2] = SSEG_A;
+      displays[1] = SSEG_L;
+      displays[0] = SSEG_B;
+      break;
+    case SSEG_DONE:
+      displays[3] = SSEG_D;
+      displays[2] = SSEG_O;
+      displays[1] = SSEG_N;
+      displays[0] = SSEG_E;
+      break;
+    default:
+      break;
+  }
+}
+
 /// Writes a int number to the display.
 ///
 /// Can handle all integers in the range `-999 <= x <= 9999`
@@ -90,7 +111,7 @@ void writeInt(int n)
     if (i < d)
       displays[i] = SSEG_NUMBERS[n%10];
     n/=10;
-  } 
+  }
 }
 
 /// Sets all the displays to be black

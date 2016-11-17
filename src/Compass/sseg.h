@@ -50,10 +50,15 @@
 #define SSEG_H 0b10001001
 #define SSEG_I 0b11001111
 #define SSEG_L 0b11000111
+#define SSEG_N 0b10101011
 #define SSEG_O 0b11000000
 #define SSEG_Q 0b10011000
 #define SSEG_R 0b10101111
 #define SSEG_U 0b11000001
+
+// Useful phrases
+#define SSEG_CAL 1
+#define SSEG_DONE 2
 
 
 // Performs the strobing
@@ -62,6 +67,7 @@ void strobeDisplay();
 // Write a numeral
 void writeHex(unsigned int n);
 void writeInt(int n);
+void writeMessage(int message);
 
 // Clear the display
 void writeClear();

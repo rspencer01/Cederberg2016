@@ -95,3 +95,25 @@ int iatan2(int x, int y)
   if (x>=0 && y<=0) return 360-v;
   return 180+v;
 }
+
+/// Delays for a given number of milliseconds
+///
+/// Simply enters a loop for a calculated number of iterations to
+/// block for the desired time.
+///
+/// \note This function is very approximate and is only correct
+///       to within an order of magnitude.  Higher precision timing
+///       should be done with the `timer0` interrupts.
+void delay(int ms)
+{
+  unsigned int n;
+
+  while (ms!=0)
+  {
+    // Gotten from some old code for a 4MHz processor and doubled
+    n = 495;
+    while (--n)
+    __asm__ __volatile__ (" wdr ");
+    --ms;
+  }
+}

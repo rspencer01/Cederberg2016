@@ -16,4 +16,7 @@ int digits(int n);
 // An integer atan2 function (in degrees)
 int iatan2(int x, int y);
 
+// Delays for an approximate time
+void delay(int ms);
+
 #endif /* UTILS_H_ */
