@@ -26,7 +26,7 @@ void enableCompass()
   delay(50);
 }
 
-/// Calibrates the compass
+/// Calibrates the compass offset
 ///
 /// The user, in 8 seconds, must make a full revolution.  Both X and Y values
 /// are agrigated every second over that period and the sum is stored as the
@@ -72,6 +72,7 @@ void calibrate()
 }
 
 /// Reads the x value from the magnetometer
+///
 int readCompassX()
 {
   int x = 0;
@@ -82,6 +83,7 @@ int readCompassX()
 }
 
 /// Reads the y value from the magnetometer
+///
 int readCompassY()
 {
   int y = 0;
@@ -92,10 +94,30 @@ int readCompassY()
 }
 
 /// Returns the heading in degrees clockwise from North.
+///
 int readCompass()
 {
   int x = readCompassX()-xcalib;
   int y = readCompassY()-ycalib;
   // Reverse things due to the layout of the package.
   return iatan2(-y,x);
+}
+
+/// Disable the compass, turning of its power
+///
+/// To maintain a lower power footprint, the compass module can be hard.
+/// deactivated by removing its power line (which is controlled by pin C0)
+/// and the power to its surrounding infrastructure.
+void disableCompass()
+{
+  // Remove SPI control of the B port
+  SPCR &= ~_BV(SPE);
+  // Disable the compass power line
+  portC &= ~0b00000001;
+  // Set all the SPI ports to low manually
+  portB &= ~0b00101000;
+  setPorts();
+  // SPI enable is high on disable.  Disable it to pull down all
+  // the pins
+  enableSPI();
 }
