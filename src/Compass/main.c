@@ -3,11 +3,13 @@
 #include "utils.h"
 #include "gpio.h"
 #include "sseg.h"
+#include "state.h"
 #include "timers.h"
 #include "spi.h"
 #include "compass.h"
 
 int pushbuttonPressed = 0;
+int state = STATE_COMPASS_360;
 
 int main(void)
 {
@@ -24,11 +26,20 @@ int main(void)
   while(1)
   {
     enableCompass();
-    writeInt(readCompass());
+    int angle = readCompass();
+    if (state == STATE_COMPASS_180)
+      if (angle > 180)
+        angle -= 360;
+    writeInt(angle);
     if (pushbuttonPressed & 0x01)
     {
       calibrate();
       pushbuttonPressed &= ~0x01;
+    }
+    if (pushbuttonPressed & 0x02)
+    {
+      state ^= STATE_COMPASS_ANGLE_TOGGLE;
+      pushbuttonPressed &= ~0x02;
     }
     initialWait = 2;
     while(initialWait)
