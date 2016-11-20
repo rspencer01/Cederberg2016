@@ -10,7 +10,7 @@ PROJECT_OBJ=$(BUILD_DIR)/$(PROJECT_NAME).o
 PROJECT_HEX=$(BUILD_DIR)/$(PROJECT_NAME).hex
 
 CC=avr-gcc
-CC_FLAGS=-mmcu=atmega88 -Wall -g -O3
+CC_FLAGS=-mmcu=atmega88 -Wall -g
 
 PROGRAMMER=jtag2isp
 MICROCONTROLLER=m88
