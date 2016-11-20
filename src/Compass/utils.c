@@ -30,7 +30,7 @@ void resetWatchdogConfig()
       : /* no outputs */
       : "n" (_SFR_MEM_ADDR(_WD_CONTROL_REG)),
       "r" ((uint8_t)(_BV(WDCE) | _BV(WDE))),
-      "r" ((uint8_t) (_BV(WDIE) | _BV(WDP3)))
+      "r" ((uint8_t) (_BV(WDIE) | _BV(WDP3) | _BV(WDP0)))
       : "r0"
   );
 }
