@@ -8,4 +8,6 @@
 
 extern int state;
 
+extern int displayCountdown;
+
 #endif

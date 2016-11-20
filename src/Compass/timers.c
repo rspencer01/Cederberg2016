@@ -3,6 +3,7 @@
 #include "timers.h"
 #include "sseg.h"
 #include "gpio.h"
+#include "state.h"
 #include "compass.h"
 
 extern int count;
@@ -68,7 +69,7 @@ ISR(TIMER0_COMPA_vect)
     {
       // Occurs every second
       timer_20ms_1s = INI_20MS_1S;
-      if (initialWait > 0) initialWait--;
+      if (displayCountdown> 0) displayCountdown--;
     }
   }
 }
@@ -79,5 +80,17 @@ ISR(TIMER0_COMPA_vect)
 /// Reads the thermometers in order to keep a minimum/maximum
 /// that is updated every 64s.
 ISR(WDT_vect)
+{
+}
+
+
+/// The INT6 vector
+///
+/// Called by the depression of pushbutton 4.  In general use
+/// (ie, when sleeping) this is called on a low.  However, this,
+/// if continued, would result in the interrupt firing every time
+/// the interrupt enable flag is set. Thus the interrupt is
+/// immediately disabled for both pushbuttons.
+ISR(PCINT0_vect)
 {
 }

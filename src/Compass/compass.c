@@ -1,6 +1,7 @@
 #include <avr/wdt.h>
 #include "compass.h"
 #include "gpio.h"
+#include "state.h"
 #include "spi.h"
 #include "utils.h"
 #include "timers.h"
@@ -32,42 +33,42 @@ void enableCompass()
 /// are agrigated every second over that period and the sum is stored as the
 /// offset.
 ///
-/// \note This function blocks.  It controls variable `initialWait` and resets
+/// \note This function blocks.  It controls variable `displayCountdown` and resets
 /// the watchdog of its own accord.
 void calibrate()
 {
   // Do this so we get a full second of the first message
-  initialWait = 1;
-  while(initialWait)
+  displayCountdown = 1;
+  while(displayCountdown)
     wdt_reset();
 
   writeMessage(SSEG_CAL);
 
-  initialWait = 1;
-  while(initialWait)
+  displayCountdown = 1;
+  while(displayCountdown)
     wdt_reset();
 
-  int lastInitialWait = 9;
+  int lastdisplayCountdown = 9;
   xcalib = 0;
   ycalib = 0;
-  initialWait = 8;
-  while(initialWait)
+  displayCountdown = 8;
+  while(displayCountdown)
   {
-    if (lastInitialWait != initialWait)
+    if (lastdisplayCountdown != displayCountdown)
     {
-      lastInitialWait = initialWait;
+      lastdisplayCountdown = displayCountdown;
       xcalib += readCompassX()/8;
       ycalib += readCompassY()/8;
     }
-    writeInt(initialWait);
+    writeInt(displayCountdown);
     delay(10);
     wdt_reset();
   }
 
   writeMessage(SSEG_DONE);
 
-  initialWait = 1;
-  while(initialWait)
+  displayCountdown = 1;
+  while(displayCountdown)
     wdt_reset();
 }
 

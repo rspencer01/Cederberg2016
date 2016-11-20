@@ -44,6 +44,12 @@ void initMicro()
   resetWatchdogConfig();
   // Set the sleep mode to "power-down"
   SMCR = _BV(SM1);
+
+  // Disable external interrupts
+  EIMSK = 0;
+  // Enable pin change interrupts
+  PCICR = _BV(PCIE0);
+  PCMSK0 = _BV(PCINT6);
   sei();
 }
 
