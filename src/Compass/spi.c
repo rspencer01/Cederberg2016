@@ -1,3 +1,7 @@
+/// @file spi.c
+///
+/// Low level SPI interface code to read and write registers on peripheral
+/// devices.
 #include <avr/wdt.h>
 #include "spi.h"
 #include "gpio.h"

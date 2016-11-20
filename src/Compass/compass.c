@@ -1,3 +1,7 @@
+/// @file compass.c
+///
+/// Code controlling the interface to the compass/accelerometer chip LSM303D
+
 #include <avr/wdt.h>
 #include "compass.h"
 #include "gpio.h"

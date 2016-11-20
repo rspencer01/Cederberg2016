@@ -1,3 +1,7 @@
+/// @file gpio.c
+///
+/// Code to manage the general purpose input and output of the microcontroller
+/// pins.
 #include <avr/io.h>
 #include "gpio.h"
 #include "utils.h"
@@ -95,6 +99,10 @@ void setPorts()
 ///
 /// Returns 0 on pushbutton down and not zero on pushbutton
 /// up.
+///
+/// @param id The pushbutton ID as defined in gpio.h
+///
+/// @returns Zero on pushbutton up and non zero on pushbutton down
 char readPushButton(int id)
 {
   if (id < 3)

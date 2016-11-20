@@ -1,3 +1,6 @@
+/// @file utils.c
+///
+/// Various utilities and initialisations.
 #include <avr/wdt.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -72,7 +75,10 @@ void sleep()
 
 /// Returns the linearly interpolated `v[a/b]`
 ///
-/// Parameter `n` is the length of `v`.
+/// @param a The numerator of the fractional index
+/// @param b The denominator of the fractional index
+/// @param v The array to interpolate
+/// @param n The lenght of `v`
 int flerp(int a, int b,int* v, int n)
 {
   int va = v[min((a/b),n)];
@@ -82,6 +88,9 @@ int flerp(int a, int b,int* v, int n)
 }
 
 /// Calculates the number of digits (in base 10) of the argument.
+///
+/// @param n A positive or negative number
+/// @returns The number of digits in `n`
 int digits(int n)
 {
   n = abs(n);
@@ -101,6 +110,10 @@ int atan2v[] = {0, 6, 11, 17, 22, 27, 31, 35, 39, 42, 45};
 /// Calculate the angle of a point in xy space from the positive x axis.
 ///
 /// The result is in degrees from 0 to 360.
+///
+/// @param x The x coordinate of the point
+/// @param y The y coordinate of the point
+/// @returns The angle in degrees from 0 to 360
 int iatan2(int x, int y)
 {
   if (x==0)
@@ -124,6 +137,8 @@ int iatan2(int x, int y)
 /// \note This function is very approximate and is only correct
 ///       to within an order of magnitude.  Higher precision timing
 ///       should be done with the `timer0` interrupts.
+///
+/// @param ms The approximate number of milliseconds to block
 void delay(int ms)
 {
   unsigned int n;

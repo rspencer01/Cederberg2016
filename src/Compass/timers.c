@@ -1,3 +1,6 @@
+/// @file timers.c
+///
+/// All the timer set up code and ISR vectors.
 #include <avr/interrupt.h>
 #include <avr/wdt.h>
 #include "timers.h"

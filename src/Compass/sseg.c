@@ -1,3 +1,6 @@
+/// @file sseg.c
+///
+/// Code to handle the seven segment displays and show various outputs.
 #include "sseg.h"
 #include "gpio.h"
 #include "utils.h"
@@ -49,6 +52,10 @@ void strobeDisplay()
 }
 
 /// Writes a hex number to the display.
+///
+/// Can only handle 2 byte numbers
+///
+/// @param n The value to display
 void writeHex(unsigned int n)
 {
   int i = 0;
@@ -62,6 +69,9 @@ void writeHex(unsigned int n)
   }
 }
 
+/// Writes a predefined message to the display
+///
+/// @param message The message ID (as defined in sseg.h)
 void writeMessage(int message)
 {
   switch (message)
@@ -86,6 +96,8 @@ void writeMessage(int message)
 /// Writes a int number to the display.
 ///
 /// Can handle all integers in the range `-999 <= x <= 9999`
+///
+/// @param n The value to display
 void writeInt(int n)
 {
   writeClear();
