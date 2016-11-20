@@ -10,7 +10,7 @@ PROJECT_OBJ=$(BUILD_DIR)/$(PROJECT_NAME).o
 PROJECT_HEX=$(BUILD_DIR)/$(PROJECT_NAME).hex
 
 CC=avr-gcc
-CC_FLAGS=-mmcu=atmega88 -Wall -g
+CC_FLAGS=-mmcu=atmega88 -Wall -g -O3
 
 PROGRAMMER=jtag2isp
 MICROCONTROLLER=m88
@@ -36,6 +36,9 @@ $(OBJ_DIR):
 
 install-isp: $(PROJECT_HEX)
 	sudo avrdude -c $(PROGRAMMER) -p $(MICROCONTROLLER) -U flash:w:$(PROJECT_HEX):i
+
+doc:
+	cd ../../ && doxygen && cd src/Compass
 
 .PHONY: clean
 clean:
