@@ -15,6 +15,8 @@
 int xcalib;
 /// The y component of the magnetometer offset
 int ycalib;
+/// The y component of the magnetometer offset
+int zcalib;
 
 /// Set all the registers in the compass as desired
 void enableCompass()
@@ -47,8 +49,12 @@ void calibrate()
     wdt_reset();
 
   writeMessage(SSEG_CAL);
+  displayCountdown = 2;
+  while(displayCountdown)
+    wdt_reset();
 
-  displayCountdown = 1;
+  writeMessage(SSEG_HZTL);
+  displayCountdown = 4;
   while(displayCountdown)
     wdt_reset();
 
@@ -63,6 +69,26 @@ void calibrate()
       lastdisplayCountdown = displayCountdown;
       xcalib += readCompassX()/8;
       ycalib += readCompassY()/8;
+    }
+    writeInt(displayCountdown);
+    delay(10);
+    wdt_reset();
+  }
+
+  writeMessage(SSEG_VERT);
+  displayCountdown = 4;
+  while(displayCountdown)
+    wdt_reset();
+
+  lastdisplayCountdown = 9;
+  zcalib = 0;
+  displayCountdown = 8;
+  while(displayCountdown)
+  {
+    if (lastdisplayCountdown != displayCountdown)
+    {
+      lastdisplayCountdown = displayCountdown;
+      zcalib += readCompassZ()/8;
     }
     writeInt(displayCountdown);
     delay(10);
@@ -98,12 +124,27 @@ int readCompassY()
   return y;
 }
 
+/// Reads the z value from the magnetometer
+///
+int readCompassZ()
+{
+  int z = 0;
+  z = SPIReadRegister(0x0d | 0x80);
+  z <<= 8;
+  z += SPIReadRegister(0x0c | 0x80);
+  return z;
+}
+
 /// Returns the heading in degrees clockwise from North.
 ///
-int readCompass()
+int readCompass(int mode)
 {
   int x = readCompassX()-xcalib;
-  int y = readCompassY()-ycalib;
+  int y;
+  if (mode == COMPASS_HORIZONTAL)
+    y = readCompassY()-ycalib;
+  else
+    y = readCompassZ()-zcalib;
   // Reverse things due to the layout of the package.
   return iatan2(-y,x);
 }

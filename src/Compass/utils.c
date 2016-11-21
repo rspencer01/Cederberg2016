@@ -52,7 +52,7 @@ void initMicro()
   EIMSK = 0;
   // Enable pin change interrupts
   PCICR = _BV(PCIE0);
-  PCMSK0 = _BV(PCINT6);
+  PCMSK0 = _BV(PCINT6) | _BV(PCINT2) | _BV(PCINT1) | _BV(PCINT0);
   sei();
 }
 

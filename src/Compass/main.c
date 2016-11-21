@@ -21,15 +21,19 @@ int main(void)
   // Loop forever
   while(1)
   {
+    displayCountdown = 30;
+    int lastdisplayCountdown = 31;
     enableCompass();
-    displayCountdown = 10;
-    int lastdisplayCountdown = 11;
     while(displayCountdown)
     {
       if (lastdisplayCountdown != displayCountdown)
       {
-        int angle = readCompass();
-        if (state == STATE_COMPASS_180)
+        int angle;
+        if (state & STATE_COMPASS_ANGLE_TOGGLE)
+          angle = readCompass(COMPASS_VERTICAL);
+        else
+          angle = readCompass(COMPASS_HORIZONTAL);
+        if (state & STATE_COMPASS_MODE_TOGGLE)
           if (angle > 180)
             angle -= 360;
         writeInt(angle);
@@ -40,12 +44,18 @@ int main(void)
         // This munches displayCountdown
         calibrate();
         pushbuttonPressed &= ~0x01;
-        displayCountdown = 10;
+        displayCountdown = 30;
       }
       if (pushbuttonPressed & 0x02)
       {
-        state ^= STATE_COMPASS_ANGLE_TOGGLE;
+        state ^= STATE_COMPASS_MODE_TOGGLE;
         pushbuttonPressed &= ~0x02;
+        displayCountdown = 30;
+      }
+      if (pushbuttonPressed & 0x04)
+      {
+        state ^= STATE_COMPASS_ANGLE_TOGGLE;
+        pushbuttonPressed &= ~0x04;
         displayCountdown = 10;
       }
       wdt_reset();

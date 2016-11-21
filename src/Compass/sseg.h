@@ -54,11 +54,16 @@
 #define SSEG_O 0b11000000
 #define SSEG_Q 0b10011000
 #define SSEG_R 0b10101111
+#define SSEG_T 0b10000111
 #define SSEG_U 0b11000001
+#define SSEG_V 0b11000001
+#define SSEG_Z 0b10100100
 
 // Useful phrases
 #define SSEG_CAL 1
 #define SSEG_DONE 2
+#define SSEG_HZTL 3
+#define SSEG_VERT 4
 
 
 // Performs the strobing

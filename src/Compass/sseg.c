@@ -88,6 +88,18 @@ void writeMessage(int message)
       displays[1] = SSEG_N;
       displays[0] = SSEG_E;
       break;
+    case SSEG_HZTL:
+      displays[3] = SSEG_H;
+      displays[2] = SSEG_Z;
+      displays[1] = SSEG_T;
+      displays[0] = SSEG_L;
+      break;
+    case SSEG_VERT:
+      displays[3] = SSEG_V;
+      displays[2] = SSEG_E;
+      displays[1] = SSEG_R;
+      displays[0] = SSEG_T;
+      break;
     default:
       break;
   }

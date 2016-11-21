@@ -5,6 +5,7 @@
 #include <avr/wdt.h>
 #include "timers.h"
 #include "sseg.h"
+#include "spi.h"
 #include "gpio.h"
 #include "state.h"
 #include "compass.h"
@@ -87,13 +88,14 @@ ISR(WDT_vect)
 }
 
 
-/// The INT6 vector
+/// The PCINT0 vector
 ///
-/// Called by the depression of pushbutton 4.  In general use
-/// (ie, when sleeping) this is called on a low.  However, this,
-/// if continued, would result in the interrupt firing every time
-/// the interrupt enable flag is set. Thus the interrupt is
-/// immediately disabled for both pushbuttons.
+/// Called by the depression of pushbutton 3 or 4.  Since pushbutton
+/// 3 is on SS port, depressing this pin kills the SPI mode (see
+/// section 19.3 of the datasheet).  We thus immediately reset SPI
+/// configuration and port direction.
 ISR(PCINT0_vect)
 {
+  initSPI();
+  initPorts();
 }
