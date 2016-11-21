@@ -47,8 +47,18 @@ void disableSPI()
 ///
 /// Instead of using interrupts, we poll the status register until there
 /// is data to return.  This might not be the best thing to do...
+///
+/// Indeed, if the SS port is pulled low, this will fail as the SPI system
+/// will be in slave mode (see `ISR(PCINT0_vect)`).  Thus in this case the
+/// function will return a dummy response.
+///
+/// @param data The byte to transmit over SPI
+///
+/// @returns The reply via SPI, received during transmission of the byte
 unsigned char RdWrSPI(unsigned char data)
 {
+  if (readPushButton(PUSHBUTTON_3))
+    return -1;
   // Write the data out
   SPDR = data;
   // Poll a dummy byte, but don't watchdog out
@@ -61,6 +71,10 @@ unsigned char RdWrSPI(unsigned char data)
 /// Reads a register of the SPI device.
 ///
 /// Performs two read/writes to read a single 8bit register of the device.
+///
+/// @param address The address of the peripheral register to read
+///
+/// @returns The value held in the peripheral register
 unsigned char SPIReadRegister(unsigned char address)
 {
   enableSPI();
@@ -73,11 +87,13 @@ unsigned char SPIReadRegister(unsigned char address)
 /// Writes a register of the SPI device
 ///
 /// Performs a two read/writes to set a single 8bit register of the device.
-unsigned char SPIWriteRegister(unsigned char address, unsigned char data)
+///
+/// @param address The address of the peripheral register to write
+/// @param data The value to write to the register
+void SPIWriteRegister(unsigned char address, unsigned char data)
 {
   enableSPI();
   RdWrSPI(address);
   RdWrSPI(data);
   disableSPI();
-  return data;
 }
