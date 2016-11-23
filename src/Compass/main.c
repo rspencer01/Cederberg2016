@@ -27,15 +27,23 @@ int main(void)
     {
       if (lastdisplayCountdown != displayCountdown)
       {
-        int angle;
-        if (state & STATE_COMPASS_ANGLE_TOGGLE)
-          angle = readCompass(COMPASS_VERTICAL);
+        if (state & STATE_SPIRIT_TOGGLE)
+        {
+          int level = readLevel();
+          writeInt(level);
+        }
         else
-          angle = readCompass(COMPASS_HORIZONTAL);
-        if (state & STATE_COMPASS_MODE_TOGGLE)
-          if (angle > 180)
-            angle -= 360;
-        writeInt(angle);
+        {
+          int angle;
+          if (state & STATE_COMPASS_ANGLE_TOGGLE)
+            angle = readCompass(COMPASS_VERTICAL);
+          else
+            angle = readCompass(COMPASS_HORIZONTAL);
+          if (state & STATE_COMPASS_MODE_TOGGLE)
+            if (angle > 180)
+              angle -= 360;
+          writeInt(angle);
+        }
         lastdisplayCountdown = displayCountdown;
       }
       if (pushbuttonPressed & 0x01)
@@ -55,10 +63,17 @@ int main(void)
       {
         state ^= STATE_COMPASS_ANGLE_TOGGLE;
         pushbuttonPressed &= ~0x04;
-        displayCountdown = 10;
+        displayCountdown = 30;
+      }
+      if (pushbuttonPressed & 0x08)
+      {
+        state ^= STATE_SPIRIT_TOGGLE;
+        pushbuttonPressed &= ~0x08;
+        displayCountdown = 30;
       }
     }
     disableCompass();
+    state &= ~STATE_SPIRIT_TOGGLE;
     sleep();
   }
 }

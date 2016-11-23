@@ -11,11 +11,11 @@
 #include "sseg.h"
 
 /// The x component of the magnetometer offset
-int xcalib;
+int x_mag_calib;
 /// The y component of the magnetometer offset
-int ycalib;
+int y_mag_calib;
 /// The y component of the magnetometer offset
-int zcalib;
+int z_mag_calib;
 
 /// Set all the registers in the compass as desired
 void enableCompass()
@@ -25,7 +25,8 @@ void enableCompass()
   initSPI();
   enableSPI();
   delay(50);
-  SPIWriteRegister(0x20,0x37);
+  SPIWriteRegister(0x20,0x17);
+  SPIWriteRegister(0x21,0x00);
   SPIWriteRegister(0x24,0x68);
   SPIWriteRegister(0x25,0x00);
   SPIWriteRegister(0x26,0x00);
@@ -54,16 +55,16 @@ void calibrate()
   while(displayCountdown);
 
   int lastdisplayCountdown = 9;
-  xcalib = 0;
-  ycalib = 0;
+  x_mag_calib = 0;
+  y_mag_calib = 0;
   displayCountdown = 8;
   while(displayCountdown)
   {
     if (lastdisplayCountdown != displayCountdown)
     {
       lastdisplayCountdown = displayCountdown;
-      xcalib += readCompassX()/8;
-      ycalib += readCompassY()/8;
+      x_mag_calib += readCompassX()/8;
+      y_mag_calib += readCompassY()/8;
     }
     writeInt(displayCountdown);
     delay(10);
@@ -74,14 +75,14 @@ void calibrate()
   while(displayCountdown);
 
   lastdisplayCountdown = 9;
-  zcalib = 0;
+  z_mag_calib = 0;
   displayCountdown = 8;
   while(displayCountdown)
   {
     if (lastdisplayCountdown != displayCountdown)
     {
       lastdisplayCountdown = displayCountdown;
-      zcalib += readCompassZ()/8;
+      z_mag_calib += readCompassZ()/8;
     }
     writeInt(displayCountdown);
     delay(10);
@@ -126,16 +127,32 @@ int readCompassZ()
   return z;
 }
 
+/// Reads the x value from the magnetometer
+///
+int readAccelerometerY()
+{
+  int x = 0;
+  x = SPIReadRegister(0x2b | 0x80);
+  x <<= 8;
+  x += SPIReadRegister(0x2a | 0x80);
+  return x;
+}
+
+int readLevel()
+{
+  return readAccelerometerY()/10;
+}
+
 /// Returns the heading in degrees clockwise from North.
 ///
 int readCompass(int mode)
 {
-  int x = readCompassX()-xcalib;
+  int x = readCompassX()-x_mag_calib;
   int y;
   if (mode == COMPASS_HORIZONTAL)
-    y = readCompassY()-ycalib;
+    y = readCompassY()-y_mag_calib;
   else
-    y = readCompassZ()-zcalib;
+    y = readCompassZ()-z_mag_calib;
   // Reverse things due to the layout of the package.
   return iatan2(-y,x);
 }

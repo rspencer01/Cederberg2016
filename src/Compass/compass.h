@@ -15,5 +15,7 @@ int readCompassX();
 int readCompassY();
 int readCompassZ();
 
+int readLevel();
+
 void disableCompass();
 #endif
