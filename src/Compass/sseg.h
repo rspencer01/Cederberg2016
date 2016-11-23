@@ -62,16 +62,16 @@
 #define SSEG_Z 0b10100100
 
 // Useful phrases
-#define SSEG_CAL  1
-#define SSEG_DONE 2
-#define SSEG_HZTL 3
-#define SSEG_VERT 4
-#define SSEG_BE   5
-#define SSEG_FAST 6
-#define SSEG_GOOD 7
-#define SSEG_NICE 8
-#define SSEG_EH   9
-#define SSEG_BAD  10
+extern const int SSEG_CALB [];
+extern const int SSEG_DONE [];
+extern const int SSEG_HZTL [];
+extern const int SSEG_VERT [];
+extern const int SSEG_BE [];
+extern const int SSEG_FAST [];
+extern const int SSEG_GOOD [];
+extern const int SSEG_NICE [];
+extern const int SSEG_EH [];
+extern const int SSEG_BAD [];
 
 
 // Performs the strobing
@@ -80,7 +80,7 @@ void strobeDisplay();
 // Write a numeral
 void writeHex(unsigned int n);
 void writeInt(int n);
-void writeMessage(int message);
+void writeMessage(const int message[]);
 
 // Clear the display
 void writeClear();

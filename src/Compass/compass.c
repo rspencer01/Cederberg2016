@@ -46,7 +46,7 @@ void calibrate()
   displayCountdown = 1;
   while(displayCountdown);
 
-  writeMessage(SSEG_CAL);
+  writeMessage(SSEG_CALB);
   displayCountdown = 2;
   while(displayCountdown);
 

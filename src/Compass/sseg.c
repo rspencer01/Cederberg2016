@@ -26,6 +26,17 @@ const unsigned char SSEG_LETTERS[6] = { SSEG_A,
                                         SSEG_E,
                                         SSEG_F};
 
+const int SSEG_CALB [] = {SSEG_C, SSEG_A, SSEG_L, SSEG_B};
+const int SSEG_DONE [] = {SSEG_D, SSEG_O, SSEG_N, SSEG_E};
+const int SSEG_HZTL [] = {SSEG_H, SSEG_Z, SSEG_T, SSEG_L};
+const int SSEG_VERT [] = {SSEG_V, SSEG_E, SSEG_R, SSEG_T};
+const int SSEG_BE [] = {SSEG_B, SSEG_E, 0xff, 0xff};
+const int SSEG_FAST [] = {SSEG_F, SSEG_A, SSEG_S, SSEG_T};
+const int SSEG_GOOD [] = {SSEG_G, SSEG_O, SSEG_O, SSEG_D};
+const int SSEG_NICE [] = {SSEG_N, SSEG_I, SSEG_C, SSEG_E};
+const int SSEG_EH [] = {SSEG_E, SSEG_H, 0xff, 0xff};
+const int SSEG_BAD [] = {SSEG_B, SSEG_A, SSEG_D, 0xff};
+
 /// The actual values in each display
 int displays[4] = {0, 0, 0, 0};
 
@@ -72,73 +83,11 @@ void writeHex(unsigned int n)
 /// Writes a predefined message to the display
 ///
 /// @param message The message ID (as defined in sseg.h)
-void writeMessage(int message)
+void writeMessage(const int message[])
 {
-  switch (message)
-  {
-    case SSEG_CAL:
-      displays[3] = SSEG_C;
-      displays[2] = SSEG_A;
-      displays[1] = SSEG_L;
-      displays[0] = SSEG_B;
-      break;
-    case SSEG_DONE:
-      displays[3] = SSEG_D;
-      displays[2] = SSEG_O;
-      displays[1] = SSEG_N;
-      displays[0] = SSEG_E;
-      break;
-    case SSEG_HZTL:
-      displays[3] = SSEG_H;
-      displays[2] = SSEG_Z;
-      displays[1] = SSEG_T;
-      displays[0] = SSEG_L;
-      break;
-    case SSEG_VERT:
-      displays[3] = SSEG_V;
-      displays[2] = SSEG_E;
-      displays[1] = SSEG_R;
-      displays[0] = SSEG_T;
-      break;
-    case SSEG_BE:
-      displays[3] = SSEG_B;
-      displays[2] = SSEG_E;
-      displays[1] = 0xff;
-      displays[0] = 0xff;
-      break;
-    case SSEG_FAST:
-      displays[3] = SSEG_F;
-      displays[2] = SSEG_A;
-      displays[1] = SSEG_S;
-      displays[0] = SSEG_T;
-      break;
-    case SSEG_GOOD:
-      displays[3] = SSEG_G;
-      displays[2] = SSEG_O;
-      displays[1] = SSEG_O;
-      displays[0] = SSEG_D;
-      break;
-    case SSEG_NICE:
-      displays[3] = SSEG_N;
-      displays[2] = SSEG_I;
-      displays[1] = SSEG_C;
-      displays[0] = SSEG_E;
-      break;
-    case SSEG_EH:
-      displays[3] = SSEG_E;
-      displays[2] = SSEG_H;
-      displays[1] = 0xff;
-      displays[0] = 0xff;
-      break;
-    case SSEG_BAD:
-      displays[3] = SSEG_B;
-      displays[2] = SSEG_A;
-      displays[1] = SSEG_D;
-      displays[0] = 0xff;
-      break;
-    default:
-      break;
-  }
+  int i;
+  for (i = 0; i < 4; ++i)
+    displays[3-i] = message[i];
 }
 
 /// Writes a int number to the display.
