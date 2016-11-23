@@ -4,6 +4,7 @@
 #include "gpio.h"
 #include "sseg.h"
 #include "state.h"
+#include "reaction.h"
 #include "timers.h"
 #include "spi.h"
 #include "compass.h"
@@ -11,6 +12,8 @@
 int pushbuttonPressed = 0;
 int state = STATE_COMPASS_360;
 int displayCountdown = 0;
+int reactionGameCountdown = 0;
+int reactionGameButton = 0;
 
 int main(void)
 {
@@ -27,6 +30,16 @@ int main(void)
     {
       if (lastdisplayCountdown != displayCountdown)
       {
+        if (readPushButton(PUSHBUTTON_2))
+          reactionGameButton += 1;
+        else
+          reactionGameButton = 0;
+        if (reactionGameButton == 4)
+        {
+          playReactionGame();
+          reactionGameButton = 0;
+          displayCountdown = 0;
+        }
         if (state & STATE_SPIRIT_TOGGLE)
         {
           int level = readLevel();

@@ -8,6 +8,7 @@
 #include "gpio.h"
 #include "state.h"
 #include "compass.h"
+#include "reaction.h"
 
 extern int count;
 extern int pushbuttonPressed;
@@ -55,6 +56,9 @@ ISR(TIMER0_COMPA_vect)
   {
     // Occurs every 20ms
     timer_4ms_20ms = INI_4MS_20MS;
+
+    if (reactCountdown > 0)
+      reactCountdown--;
 
     int i;
     for (i = 0; i < 4; ++i)

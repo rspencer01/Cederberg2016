@@ -100,6 +100,42 @@ void writeMessage(int message)
       displays[1] = SSEG_R;
       displays[0] = SSEG_T;
       break;
+    case SSEG_BE:
+      displays[3] = SSEG_B;
+      displays[2] = SSEG_E;
+      displays[1] = 0xff;
+      displays[0] = 0xff;
+      break;
+    case SSEG_FAST:
+      displays[3] = SSEG_F;
+      displays[2] = SSEG_A;
+      displays[1] = SSEG_S;
+      displays[0] = SSEG_T;
+      break;
+    case SSEG_GOOD:
+      displays[3] = SSEG_G;
+      displays[2] = SSEG_O;
+      displays[1] = SSEG_O;
+      displays[0] = SSEG_D;
+      break;
+    case SSEG_NICE:
+      displays[3] = SSEG_N;
+      displays[2] = SSEG_I;
+      displays[1] = SSEG_C;
+      displays[0] = SSEG_E;
+      break;
+    case SSEG_EH:
+      displays[3] = SSEG_E;
+      displays[2] = SSEG_H;
+      displays[1] = 0xff;
+      displays[0] = 0xff;
+      break;
+    case SSEG_BAD:
+      displays[3] = SSEG_B;
+      displays[2] = SSEG_A;
+      displays[1] = SSEG_D;
+      displays[0] = 0xff;
+      break;
     default:
       break;
   }
