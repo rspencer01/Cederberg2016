@@ -2,7 +2,6 @@
 ///
 /// Low level SPI interface code to read and write registers on peripheral
 /// devices.
-#include <avr/wdt.h>
 #include "spi.h"
 #include "gpio.h"
 
@@ -61,9 +60,8 @@ unsigned char RdWrSPI(unsigned char data)
     return -1;
   // Write the data out
   SPDR = data;
-  // Poll a dummy byte, but don't watchdog out
-  while (!(SPSR & (1<<SPIF) ))
-    wdt_reset();
+  // Poll a dummy byte
+  while (!(SPSR & (1<<SPIF) ));
   data = SPDR;
   return data;
 }

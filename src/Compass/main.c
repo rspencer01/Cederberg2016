@@ -1,4 +1,3 @@
-#include <avr/wdt.h>
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include "utils.h"
@@ -58,7 +57,6 @@ int main(void)
         pushbuttonPressed &= ~0x04;
         displayCountdown = 10;
       }
-      wdt_reset();
     }
     disableCompass();
     sleep();

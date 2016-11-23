@@ -2,7 +2,6 @@
 ///
 /// Code controlling the interface to the compass/accelerometer chip LSM303D
 
-#include <avr/wdt.h>
 #include "compass.h"
 #include "gpio.h"
 #include "state.h"
@@ -39,24 +38,20 @@ void enableCompass()
 /// are agrigated every second over that period and the sum is stored as the
 /// offset.
 ///
-/// \note This function blocks.  It controls variable `displayCountdown` and resets
-/// the watchdog of its own accord.
+/// \note This function blocks.  It controls variable `displayCountdown`
 void calibrate()
 {
   // Do this so we get a full second of the first message
   displayCountdown = 1;
-  while(displayCountdown)
-    wdt_reset();
+  while(displayCountdown);
 
   writeMessage(SSEG_CAL);
   displayCountdown = 2;
-  while(displayCountdown)
-    wdt_reset();
+  while(displayCountdown);
 
   writeMessage(SSEG_HZTL);
   displayCountdown = 4;
-  while(displayCountdown)
-    wdt_reset();
+  while(displayCountdown);
 
   int lastdisplayCountdown = 9;
   xcalib = 0;
@@ -72,13 +67,11 @@ void calibrate()
     }
     writeInt(displayCountdown);
     delay(10);
-    wdt_reset();
   }
 
   writeMessage(SSEG_VERT);
   displayCountdown = 4;
-  while(displayCountdown)
-    wdt_reset();
+  while(displayCountdown);
 
   lastdisplayCountdown = 9;
   zcalib = 0;
@@ -92,14 +85,12 @@ void calibrate()
     }
     writeInt(displayCountdown);
     delay(10);
-    wdt_reset();
   }
 
   writeMessage(SSEG_DONE);
 
   displayCountdown = 1;
-  while(displayCountdown)
-    wdt_reset();
+  while(displayCountdown);
 }
 
 /// Reads the x value from the magnetometer

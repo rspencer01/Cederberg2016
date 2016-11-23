@@ -1,7 +1,6 @@
 /// @file utils.c
 ///
 /// Various utilities and initialisations.
-#include <avr/wdt.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/wdt.h>
@@ -10,41 +9,14 @@
 #include "sseg.h"
 #include "utils.h"
 
-/// Resets the watchdog timer configuration.
-///
-/// Resets the watchdog to timeout after 4 seconds, and to fire an interrupt on
-/// next timeout.  Thereafter this function must be called again to set up
-/// for another interrupt.
-///
-/// I think it must be possible to only have to call this once, but can't seem
-/// to get it to work.  This will have to do.
-void resetWatchdogConfig()
-{
-  // This here is magic.  After hours of stuffing around with registers, I
-  // found a macro in <avr/wdt.h> which, after modification, fit my requirements
-  // Please do not edit this too much.
-  __asm__ __volatile__ (
-      "in __tmp_reg__,__SREG__" "\n\t"
-      "cli" "\n\t"
-      "wdr" "\n\t"
-      "sts %0, %1" "\n\t"
-      "out __SREG__,__tmp_reg__" "\n\t"
-      "sts %0, %2" "\n \t"
-      : /* no outputs */
-      : "n" (_SFR_MEM_ADDR(_WD_CONTROL_REG)),
-      "r" ((uint8_t)(_BV(WDCE) | _BV(WDE))),
-      "r" ((uint8_t) (_BV(WDIE) | _BV(WDP3) | _BV(WDP0)))
-      : "r0"
-  );
-}
-
 /// Initialises the microcontroller
 ///
 /// Sets up the watchdog timer and the type of sleep in the registers.
 void initMicro()
 {
   cli();
-  resetWatchdogConfig();
+  // Stop the watchdog timer
+  wdt_disable();
   // Set the sleep mode to "power-down"
   SMCR = _BV(SM1);
 
@@ -147,8 +119,7 @@ void delay(int ms)
   {
     // Gotten from some old code for a 4MHz processor and doubled
     n = 495;
-    while (--n)
-      wdt_reset();
+    while (--n);
     --ms;
   }
 }

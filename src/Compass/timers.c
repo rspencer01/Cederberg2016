@@ -2,7 +2,6 @@
 ///
 /// All the timer set up code and ISR vectors.
 #include <avr/interrupt.h>
-#include <avr/wdt.h>
 #include "timers.h"
 #include "sseg.h"
 #include "spi.h"
@@ -11,7 +10,6 @@
 #include "compass.h"
 
 extern int count;
-extern int resetwdt;
 extern int pushbuttonPressed;
 /// A countdown to divide the 4ms timer into 40ms
 int timer_4ms_20ms;
@@ -77,16 +75,6 @@ ISR(TIMER0_COMPA_vect)
     }
   }
 }
-
-/// The watchdog interrupt vector
-///
-/// Called whenever the watchdog times out (once every 8s)
-/// Reads the thermometers in order to keep a minimum/maximum
-/// that is updated every 64s.
-ISR(WDT_vect)
-{
-}
-
 
 /// The PCINT0 vector
 ///

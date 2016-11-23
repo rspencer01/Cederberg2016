@@ -21,6 +21,4 @@ void delay(int ms);
 
 void sleep();
 
-void resetWatchdogConfig();
-
 #endif /* UTILS_H_ */
