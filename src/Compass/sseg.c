@@ -112,7 +112,6 @@ void writeMessage(int message)
 /// @param n The value to display
 void writeInt(int n)
 {
-  writeClear();
   int d = digits(n);
   if (d > 4)
   {
@@ -134,6 +133,8 @@ void writeInt(int n)
   {
     if (i < d)
       displays[i] = SSEG_NUMBERS[n%10];
+    else
+      displays[i] = 0xff;
     n/=10;
   }
 }
