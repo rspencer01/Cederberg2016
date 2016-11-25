@@ -10,6 +10,7 @@
 #define STATE_COMPASS_MODE_TOGGLE 0x01
 #define STATE_COMPASS_ANGLE_TOGGLE 0x02
 #define STATE_SPIRIT_TOGGLE 0x04
+#define STATE_OFF 0x08
 
 extern int state;
 

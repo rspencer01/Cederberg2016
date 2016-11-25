@@ -40,7 +40,11 @@ int main(void)
           reactionGameButton = 0;
           displayCountdown = 0;
         }
-        if (state & STATE_SPIRIT_TOGGLE)
+        if (state == STATE_OFF)
+        {
+          writeMessage(SSEG_OFF);
+        }
+        else if (state & STATE_SPIRIT_TOGGLE)
         {
           int level = readLevel();
           writeInt(level);
@@ -88,12 +92,15 @@ int main(void)
           displayCountdown = 30;
         }
         else
-          displayCountdown = 1;
+        {
+          state = STATE_OFF;
+          displayCountdown = 4;
+        }
         pushbuttonPressed &= ~0x08;
       }
     }
     disableCompass();
-    state &= ~STATE_SPIRIT_TOGGLE;
+    state = STATE_COMPASS_360;
     sleep();
   }
 }
