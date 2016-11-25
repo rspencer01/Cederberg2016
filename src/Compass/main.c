@@ -69,22 +69,19 @@ int main(void)
       {
         // This munches displayCountdown
         calibrate();
-        pushbuttonPressed &= ~0x01;
         displayCountdown = 30;
       }
       if ((pushbuttonPressed & 0x02) && ((state & STATE_SPIRIT_TOGGLE) == 0))
       {
         state ^= STATE_COMPASS_MODE_TOGGLE;
-        pushbuttonPressed &= ~0x02;
         displayCountdown = 30;
       }
       if ((pushbuttonPressed & 0x04) && ((state & STATE_SPIRIT_TOGGLE) == 0))
       {
         state ^= STATE_COMPASS_ANGLE_TOGGLE;
-        pushbuttonPressed &= ~0x04;
         displayCountdown = 30;
       }
-      if (pushbuttonPressed & 0x08)
+      if ((pushbuttonPressed & 0x08) && (displayCountdown < 28))
       {
         if ((state & STATE_SPIRIT_TOGGLE) == 0)
         {
@@ -96,8 +93,8 @@ int main(void)
           state = STATE_OFF;
           displayCountdown = 4;
         }
-        pushbuttonPressed &= ~0x08;
       }
+      pushbuttonPressed = 0;
     }
     disableCompass();
     state = STATE_COMPASS_360;
