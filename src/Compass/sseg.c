@@ -111,6 +111,7 @@ void writeInt(int n)
     writeHex(0xFFFF);
     return;
   }
+  int minusPlace = 5;
   if (n < 0)
   {
     if (d>3)
@@ -118,16 +119,21 @@ void writeInt(int n)
       writeHex(0xEEEE);
       return;
     }
-    displays[d] = SSEG_MINUS;
+    minusPlace = d;
     n = -n;
   }
-  int i = 0;
-  for (; i < 4; i++)
+  int i;
+  for (i = 0; i < 4; i++)
   {
     if (i < d)
       displays[i] = SSEG_NUMBERS[n%10];
     else
-      displays[i] = 0xff;
+    {
+      if (i != minusPlace)
+        displays[i] = 0xff;
+      else
+        displays[i] = SSEG_MINUS;
+    }
     n/=10;
   }
 }
