@@ -80,9 +80,14 @@ int main(void)
       }
       if (pushbuttonPressed & 0x08)
       {
-        state ^= STATE_SPIRIT_TOGGLE;
+        if ((state & STATE_SPIRIT_TOGGLE) == 0)
+        {
+          state ^= STATE_SPIRIT_TOGGLE;
+          displayCountdown = 30;
+        }
+        else
+          displayCountdown = 1;
         pushbuttonPressed &= ~0x08;
-        displayCountdown = 30;
       }
     }
     disableCompass();

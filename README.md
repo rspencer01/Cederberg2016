@@ -10,8 +10,8 @@ Operation
 The operation of the compass is as follows.
 
  * Pressing any button will wake the device for 30s/keep it alive for 30s more
- * The left most button toggles between the major modes: compass and spirit
-   level
+ * The left most button toggles between the major modes: compass, spirit
+   level and off
  * The second from left button toggles between compass vertical and horizontal
    modes
  * The second from right button toggles between (0,360) and (-180,180) degrees
