@@ -44,6 +44,7 @@
 #define SSEG_A 0b10001000
 #define SSEG_B 0b10000011
 #define SSEG_C 0b11000110
+#define SSEG_c 0b10100111
 #define SSEG_D 0b10100001
 #define SSEG_E 0b10000110
 #define SSEG_F 0b10001110
@@ -81,6 +82,7 @@ void strobeDisplay();
 void writeHex(unsigned int n);
 void writeInt(int n);
 void writeMessage(const int message[]);
+void writePrefix(int character);
 
 // Clear the display
 void writeClear();

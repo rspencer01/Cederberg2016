@@ -90,6 +90,14 @@ void writeMessage(const int message[])
     displays[3-i] = message[i];
 }
 
+/// Writes a single character to the leftmost display
+///
+/// @param character The character to display (eg `SSEG_A`)
+void writePrefix(int character)
+{
+  displays[3] = character;
+}
+
 /// Writes a int number to the display.
 ///
 /// Can handle all integers in the range `-999 <= x <= 9999`

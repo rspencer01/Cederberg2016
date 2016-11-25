@@ -56,6 +56,7 @@ int main(void)
             if (angle > 180)
               angle -= 360;
           writeInt(angle);
+          writePrefix(SSEG_c);
         }
         lastdisplayCountdown = displayCountdown;
       }
