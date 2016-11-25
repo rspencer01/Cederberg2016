@@ -56,7 +56,8 @@ int main(void)
             if (angle > 180)
               angle -= 360;
           writeInt(angle);
-          writePrefix(SSEG_c);
+          if (angle > -99)
+            writePrefix(SSEG_c);
         }
         lastdisplayCountdown = displayCountdown;
       }
@@ -67,13 +68,13 @@ int main(void)
         pushbuttonPressed &= ~0x01;
         displayCountdown = 30;
       }
-      if (pushbuttonPressed & 0x02)
+      if ((pushbuttonPressed & 0x02) && ((state & STATE_SPIRIT_TOGGLE) == 0))
       {
         state ^= STATE_COMPASS_MODE_TOGGLE;
         pushbuttonPressed &= ~0x02;
         displayCountdown = 30;
       }
-      if (pushbuttonPressed & 0x04)
+      if ((pushbuttonPressed & 0x04) && ((state & STATE_SPIRIT_TOGGLE) == 0))
       {
         state ^= STATE_COMPASS_ANGLE_TOGGLE;
         pushbuttonPressed &= ~0x04;
