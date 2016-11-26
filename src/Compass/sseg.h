@@ -74,6 +74,7 @@ extern const int SSEG_NICE [];
 extern const int SSEG_EH [];
 extern const int SSEG_BAD [];
 extern const int SSEG_OFF [];
+extern const int SSEG_ERR [];
 
 
 // Performs the strobing

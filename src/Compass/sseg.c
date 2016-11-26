@@ -37,6 +37,7 @@ const int SSEG_NICE [] = {SSEG_N, SSEG_I, SSEG_C, SSEG_E};
 const int SSEG_EH [] = {SSEG_E, SSEG_H, 0xff, 0xff};
 const int SSEG_BAD [] = {SSEG_B, SSEG_A, SSEG_D, 0xff};
 const int SSEG_OFF [] = {SSEG_O, SSEG_F, SSEG_F, 0xff};
+const int SSEG_ERR [] = {SSEG_E, SSEG_R, SSEG_R, 0xff};
 
 /// The actual values in each display
 int displays[4] = {0, 0, 0, 0};

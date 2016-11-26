@@ -20,6 +20,17 @@ int main(void)
   initMicro();
   initPorts();
   initTimers();
+
+  enableCompass();
+  while (whoami() != 0x49)
+  {
+    disableCompass();
+    writeMessage(SSEG_ERR);
+    displayCountdown = 1;
+    while(displayCountdown);
+    enableCompass();
+  }
+
   // Loop forever
   while(1)
   {

@@ -17,5 +17,7 @@ int readCompassZ();
 
 int readLevel();
 
+char whoami();
+
 void disableCompass();
 #endif

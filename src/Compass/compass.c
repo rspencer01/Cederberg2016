@@ -94,6 +94,15 @@ void calibrate()
   while(displayCountdown);
 }
 
+/// Return the whoami register of the compass
+///
+/// @returns The contents in the `whoami` register.  This is supposed to be
+/// `0x49`.
+char whoami()
+{
+  return SPIReadRegister(0x0F | 0x80);
+}
+
 /// Reads the x value from the magnetometer
 ///
 int readCompassX()
